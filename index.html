@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>for you</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Mali", "Sarabun", "Noto Sans Thai", sans-serif;
+  background:
+    radial-gradient(ellipse at 20% 15%, #ffd6e8 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 80%, #ffb3d1 0%, transparent 55%),
+    linear-gradient(160deg, #ffe3ec 0%, #ffa3bf 50%, #ff7a9e 100%);
+  background-color: #ffa3bf;
+}
+
+#board {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-sizing: border-box;
+}
+
+.row {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.track {
+  display: inline-flex;
+  width: max-content;
+  will-change: transform;
+  animation: var(--dir) var(--speed) linear infinite;
+}
+
+.track span {
+  font-size: 12px;
+  font-weight: 600;
+  padding-right: 19.2px;
+}
+
+@keyframes left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+</style>
+</head>
+
+<body>
+<div id="board"></div>
+
+<script>
+var TEXTS = ["คิดถึงแฟน(มิน)", "หลับก็ไม่บอก แต่รักน่ะ"];
+
+var colors = [
+  "#ff1f5a",
+  "#e0115f",
+  "#ff3d7f",
+  "#c8003c",
+  "#ff5c8a",
+  "#ffffff",
+  "#ff2e6e"
+];
+
+var board = document.getElementById("board");
+var rows = Math.max(15, Math.round(window.innerHeight / 25));
+
+for (var i = 0; i < rows; i++) {
+  var row = document.createElement("div");
+  row.className = "row";
+  row.style.fontSize = "12px";
+  row.style.lineHeight = "1.5";
+  row.style.color = colors[(i * 3) % colors.length];
+  row.style.fontWeight = "600";
+  row.style.opacity = "1";
+
+  var track = document.createElement("div");
+  track.className = "track";
+
+  track.style.setProperty(
+    "--dir",
+    i % 2 === 0 ? "left" : "right"
+  );
+
+  // ลดความเร็วการเลื่อน
+  track.style.setProperty(
+    "--speed",
+    (60 + (i % 5) * 10) + "s"
+  );
+
+  for (var j = 0; j < 200; j++) {
+    var s = document.createElement("span");
+    s.textContent = TEXTS[i % 2];
+    track.appendChild(s);
+  }
+
+  row.appendChild(track);
+  board.appendChild(row);
+}
+</script>
+</body>
+</html>
